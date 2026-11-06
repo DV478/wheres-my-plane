@@ -1,0 +1,47 @@
+{
+  "name": "wheres-my-plane",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "wrangler pages dev .svelte-kit/cloudflare",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "db:migrate:local": "wrangler d1 migrations apply wmp-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply wmp-db --remote",
+    "db:console:local": "wrangler d1 execute wmp-db --local --command",
+    "db:console:remote": "wrangler d1 execute wmp-db --remote --command",
+    "db:seed:local": "node scripts/seed-airports.mjs",
+    "db:seed:remote": "node scripts/seed-airports.mjs --remote",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "deploy": "npm run build && wrangler pages deploy .svelte-kit/cloudflare --project-name wheres-my-plane",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "@sveltejs/adapter-cloudflare": "^4.9.0",
+    "@sveltejs/kit": "^2.15.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/luxon": "^3.7.6",
+    "@vitest/ui": "^4.1.12",
+    "svelte": "^5.16.0",
+    "svelte-check": "^4.1.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.0",
+    "vitest": "^4.1.12",
+    "wrangler": "^3.100.0"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^9.4.1",
+    "@deck.gl/layers": "^9.4.1",
+    "@deck.gl/mapbox": "^9.4.1",
+    "luxon": "^3.7.2",
+    "maplibre-gl": "^5.24.0",
+    "resend": "^4.0.1",
+    "zod": "^4.6.7"
+  }
+}

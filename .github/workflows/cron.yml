@@ -1,0 +1,39 @@
+name: cron-tick
+
+# Pokes the Pages scheduler endpoint every minute. Pages Projects don't
+# support `[triggers] crons` in wrangler.toml (that's Workers-only), so this
+# workflow is the cron source.
+#
+# GitHub cron can skew by a few minutes or drop ticks under load; that's fine
+# — scheduler rows that miss a tick are still due at the next one.
+#
+# Setup:
+#   1) Push this repo to GitHub.
+#   2) In the repo: Settings → Secrets and variables → Actions → New repository secret
+#      - WMP_CRON_SECRET = <same value set in Cloudflare Pages>
+
+on:
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Poke /api/cron/tick
+        env:
+          WMP_CRON_SECRET: ${{ secrets.WMP_CRON_SECRET }}
+        run: |
+          code=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            -X POST \
+            -H "x-wmp-cron-secret: ${WMP_CRON_SECRET}" \
+            -H "content-length: 0" \
+            https://wheres-my-plane.pages.dev/api/cron/tick)
+          echo "status: ${code}"
+          cat /tmp/body || true
+          test "${code}" = "200"

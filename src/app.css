@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif';
+  --color-ink: #0b1020;
+  --color-sky: #1e3a8a;
+  --color-cloud: #e2e8f0;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--color-ink);
+  color: var(--color-cloud);
+  font-family: var(--font-sans);
+}

@@ -1,0 +1,44 @@
+name = "wheres-my-plane"
+compatibility_date = "2025-11-04"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".svelte-kit/cloudflare"
+
+# D1 database binding.
+# Create: `wrangler d1 create wmp-db` and paste the printed database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "wmp-db"
+database_id = "5ec31167-53b2-49c5-b594-bbd6f4cf725c"
+migrations_dir = "db/migrations"
+
+# Short-TTL cache (flight status, viewport ADS-B, weather).
+[[kv_namespaces]]
+binding = "CACHE"
+id = "f9ab689e539f448bbfb6b6e9d98903fe"
+
+# Blob storage. Hosts the Protomaps basemap (Phase 2) and later aircraft photos
+# + voice note mp3s (Phase 5). R2 enabled on the account 2026-11-05.
+[[r2_buckets]]
+binding = "BLOBS"
+bucket_name = "wmp-blobs"
+
+# Cron trigger: Pages Projects do NOT accept `[triggers]` in wrangler.toml
+# (that's Workers-only). Instead, the external scheduler of choice is a
+# GitHub Actions scheduled workflow (`.github/workflows/cron.yml`) that POSTs
+# to `/api/cron/tick` every minute with the shared header `X-WMP-Cron-Secret`.
+# GitHub cron has minute precision but can skew/drop; that's fine for this
+# workload — the scheduler row stays due and gets picked up on the next tick.
+
+# Secrets are set with `wrangler pages secret put <NAME>` for production.
+# For local dev they live in `.dev.vars` (gitignored).
+# Required:
+#   RESEND_API_KEY
+#   MAGIC_LINK_FROM
+#   PUBLIC_BASE_URL
+#   SESSION_SECRET
+# Phase 3 secrets:
+#   TELEGRAM_BOT_TOKEN           — from @BotFather
+#   TELEGRAM_WEBHOOK_SECRET      — any random 32+ char string, passed via setWebhook
+#   WMP_CRON_SECRET              — any random 32+ char string, gates /api/cron/tick
+#   WMP_INGEST_SECRET            — HMAC shared secret for /api/ingest (regen for prod)
+#   GITHUB_PAT_ACTIONS_DISPATCH  — optional; fine-grained PAT with actions:write
