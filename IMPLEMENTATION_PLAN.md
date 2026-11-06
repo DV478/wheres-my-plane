@@ -406,6 +406,8 @@ New secrets: `WMP_INGEST_SECRET`, `R2_PUBLIC_URL`, optionally `OPENSKY_USER`/`PA
 
 ## Phase 3 — Scheduled agent + Telegram alerts
 
+**STATUS 2026-11-06: done + deployed to prod.** Telegram `/start` + `/link` end-to-end verified. Scheduler runs via GitHub Actions cron workflow hitting `/api/cron/tick` every minute (Pages Projects don't support native `[triggers]` in wrangler.toml — only Workers do). Alerts are **text-only in v1**; voice note generation deferred to Phase 4's Q&A pipeline. Repo: https://github.com/DV478/wheres-my-plane. See "Resume point" in project memory for the next-session hand-off, including a `BA7 tomorrow` smoke test that still needs to be run to confirm the full add-flight → tail-assignment → Telegram-ping loop. Also see `feedback_pages_wrangler_constraints.md` for three sharp Cloudflare/Pages gotchas that bit us.
+
 ### Goal
 User gets a Telegram alert that reads, in text + voice, "Your BA456 aircraft (G-STBD) has just been assigned. It is currently inbound from Dubai, due to turn around at 21:10 local. Expect pushback on time." Alerts fire only on material change. Agent runs via a 1-minute cron Worker that respects per-flight check windows.
 

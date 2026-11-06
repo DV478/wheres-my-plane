@@ -19,10 +19,10 @@ Personal flight-tracker companion with an always-on agent, voice I/O, photo-spot
 | Phase | What ships | Status |
 |---|---|---|
 | 0 | Skeleton: deploy, auth, D1 | **done** (local + deployable; keep-alive wired) |
-| 1 | Add a flight → aircraft card | **done locally** (prod deploy pending; OTP copy tidy-up pending) |
-| 2 | Global disruption map | next |
-| 3 | Scheduled agent + Telegram alerts | - |
-| 4 | Voice Q&A ("where's my plane?") | - |
+| 1 | Add a flight → aircraft card | **done + deployed** |
+| 2 | Global disruption map | **done + deployed + smoke-tested** |
+| 3 | Scheduled agent + Telegram alerts | **done + deployed 2026-11-06** (text-only alerts; voice deferred to Phase 4) |
+| 4 | Voice Q&A ("where's my plane?") | next |
 | 5 | Photo spotter (OCR + story card) | - |
 | 6 | Price monitoring | - |
 | 7 | Harden + PWA (push, offline, attribution) | - |
