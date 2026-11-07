@@ -1,20 +1,24 @@
 name: cron-tick
 
-# Pokes the Pages scheduler endpoint every minute. Pages Projects don't
-# support `[triggers] crons` in wrangler.toml (that's Workers-only), so this
-# workflow is the cron source.
+# CURRENT MODE: on-demand. The schedule is disabled. Ticks are driven by the
+# Start/Stop panel on /app — a browser setInterval that POSTs /api/scheduler/kick
+# every 2 minutes while the tab is active and visible.
 #
-# GitHub cron can skew by a few minutes or drop ticks under load; that's fine
-# — scheduler rows that miss a tick are still due at the next one.
+# Flip back to always-on (2 lines):
+#   on:
+#     schedule:
+#       - cron: '* * * * *'   # <- uncomment this and the line above
+#     workflow_dispatch:
 #
-# Setup:
-#   1) Push this repo to GitHub.
-#   2) In the repo: Settings → Secrets and variables → Actions → New repository secret
-#      - WMP_CRON_SECRET = <same value set in Cloudflare Pages>
+# The Pages Project doesn't support [triggers] crons in wrangler.toml
+# (Workers-only), so this workflow remains the cron source for always-on mode.
+#
+# WMP_CRON_SECRET must still be set as an Actions secret — workflow_dispatch
+# manual fires still work and the secret-gated endpoint is unchanged.
 
 on:
-  schedule:
-    - cron: '* * * * *'
+  # schedule:
+  #   - cron: '* * * * *'
   workflow_dispatch:
 
 permissions:

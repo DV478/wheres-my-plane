@@ -17,7 +17,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "deploy": "npm run build && wrangler pages deploy .svelte-kit/cloudflare --project-name wheres-my-plane",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "tick": "node scripts/tick.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250101.0",
